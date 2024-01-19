@@ -37,5 +37,3 @@ Route.group(() => {
   Route.put("/update/:id", "BlogsController.update");
   Route.delete("/delete/:id", "BlogsController.delete");
 }).middleware('auth').prefix("blog");
-
-// Route.post("/blog", )
