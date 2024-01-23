@@ -4,11 +4,14 @@ import User from "App/Models/User";
 
 export default class UsersController {
   public async index() {
-    return "index";
+    const users = await User.all()
+    return users;
   }
+
   public async create(ctx: HttpContextContract) {
     return ctx.view.render("auth/signup");
   }
+
   public async store(ctx: HttpContextContract) {
     const rulesForAllFields = [rules.required(), rules.trim()];
 
@@ -36,18 +39,31 @@ export default class UsersController {
     if (findUserWithEmail) {
       return ctx.response.status(400).json({ message: "Email already exists" });
     }
+
     const user = await User.create(body);
     return user;
   }
-  public async show() {
-    return;
+  
+  public async show(ctx:HttpContextContract) {
+    const id = ctx.params.id
+    const user = await User.findByOrFail('id', id)
+    return user;
   }
-  public async edit() {
-    return;
+
+  public async edit(ctx: HttpContextContract) {
+    const id = ctx.params.id
+    return ctx.view.render(`user/${id}/edit`)
   }
-  public async update() {
-    return;
+
+  public async update(ctx: HttpContextContract) {
+    const id = ctx.params.id
+    const user = await User.findByOrFail('id', id)
+    user.merge(ctx.request.only(
+      [ "name", "username", "email", "password" ]
+    ));
+    return user;
   }
+
   public async destroy(ctx: HttpContextContract) {
     const id = ctx.params.id;
     const user = await User.findByOrFail("id", id);

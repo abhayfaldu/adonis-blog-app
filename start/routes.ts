@@ -1,26 +1,36 @@
-/*
-|--------------------------------------------------------------------------
-| Routes
-|--------------------------------------------------------------------------
-|
-| This file is dedicated for defining HTTP routes. A single file is enough
-| for majority of projects, however you can define routes in different
-| files and just make sure to import them inside this file. For example
-|
-| Define routes in following two files
-| ├── start/routes/cart.ts
-| ├── start/routes/customer.ts
-|
-| and then import them inside `start/routes.ts` as follows
-|
-| import './routes/cart'
-| import './routes/customer''
-|
-*/
+import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
+import Route from "@ioc:Adonis/Core/Route";
+import Blog from "App/Models/Blog";
 
-import Route from '@ioc:Adonis/Core/Route';
+const getBlogs = async () => {
+  const res = await Blog.all()
+  return JSON.stringify(res);
+}
 
-Route.resource('/user', 'UsersController')
-Route.get('/login/create', 'AuthController.loginForm')
+// let state = {
+//   data: [
+//     { title: 'something' },
+//     { title: 'something 1' },
+//     { title: 'something 2' },
+//     { title: 'something 3' },
+//     { title: 'something 4' },
+//     { title: 'something 5' },
+//     { title: 'something 6' }
+//   ]
+// }
 
-// index, create, store, show, edit, update, destroy
+
+const state = {data: getBlogs()}
+console.log(state);
+
+Route.get("/", (ctx: HttpContextContract) => {
+  return ctx.view.render("welcome", state);
+});
+
+
+Route.resource("/user", "UsersController");
+
+Route.get("/auth/login", "AuthController.loginForm");
+Route.post("/auth/login", "AuthController.login");
+
+Route.resource("/blog", "BlogsController");

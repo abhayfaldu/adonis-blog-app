@@ -1,4 +1,4 @@
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm';
+import { BaseModel, beforeSave, column } from '@ioc:Adonis/Lucid/Orm';
 import { DateTime } from 'luxon';
 
 export default class Blog extends BaseModel {
@@ -9,7 +9,7 @@ export default class Blog extends BaseModel {
   public title: string;
 
   @column()
-  public content: string;
+  public description: string;
 
   @column({ prepare: (value: String) => JSON.stringify(value || {}) })
   public tags: string[];
@@ -25,4 +25,11 @@ export default class Blog extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime;
+
+  @beforeSave()
+  public static async async (blog: Blog) {
+    if (blog.$dirty.tags) {
+      blog.tags = await blog.$dirty.tags.split(" ").join("").split(",")
+    }
+  }
 }
