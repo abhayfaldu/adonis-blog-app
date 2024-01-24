@@ -7,18 +7,29 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <body>
-  <div class="container-xxl">
-    {{inspect('data:')}}
-    {{inspect(state.data)}}
-    {{--  @each(blog in state.data) <h4 class="title"> {{ blog.title }} </h4> @end  --}}
-      {{--  <div class="card col-3">
-        <div class="image-section">
-          <img src="" alt="">
-          </div>
-        <div class="text-section">  --}}
-          {{--  <p class="description"></p>
+  <div class="container-xxl mb-4 d-flex juxtify-content-end">
+    <form action="/auth/logout" method="POST">
+      <button type="submit">Logout</button>
+    </form>
+  </div>
+  <div class="container-xxl d-flex flex-wrap p-4 gap-4">
+    @each(blog in state.data)
+      <div class="card" style="width: 18rem;">
+        <img src={{blog.image}} class="card-img-top" alt={{`blog.title ${image}`}}>
+        <div class="card-body">
+          <ul class="tags d-flex list-unstyled">
+            @each(tag in blog.tags)
+              <li class="text-decoration-none">#{{ tag }} &nbsp;</li>
+            @end
+          </ul>
+          <h5 class="card-title">
+            {{ blog.title }}
+          </h5>
+          <p class="card-text">{{ blog.description }}</p>
+          <a href="/blog/{{blog.id}}" class="btn btn-primary">Read More</a>
         </div>
-      </div>  --}}
+      </div>
+    @end
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>

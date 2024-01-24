@@ -1,6 +1,5 @@
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { rules, schema } from "@ioc:Adonis/Core/Validator";
-import Blog from "App/Models/Blog"
 
 export default class AuthController {
   public async loginForm(ctx: HttpContextContract) {
@@ -8,11 +7,11 @@ export default class AuthController {
   }
 
   public async login(ctx: HttpContextContract) {
-    const rulesForAllFields = [rules.required(), rules.trim()];
+    const rulesForAllFields = [ rules.required(), rules.trim() ];
 
     const bodySchema = schema.create({
-      email: schema.string([...rulesForAllFields, rules.email()]),
-      password: schema.string([...rulesForAllFields, rules.minLength(8)]),
+      email: schema.string([ ...rulesForAllFields, rules.email() ]),
+      password: schema.string([ ...rulesForAllFields, rules.minLength(8) ]),
     });
 
     const messages = {
@@ -27,6 +26,11 @@ export default class AuthController {
     });
 
     await ctx.auth.use("web").attempt(body.email, body.password);
+    return ctx.response.redirect('/')
+  }
+
+  public async logout(ctx: HttpContextContract) {
+    await ctx.auth.logout()
     return ctx.response.redirect('/')
   }
 }

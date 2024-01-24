@@ -9,7 +9,9 @@ export default class BlogsController {
   }
 
   public async create(ctx: HttpContextContract) {
-    return ctx.view.render('blog/create_blog')
+    if (await ctx.auth.use('web').authenticate()) {
+      return ctx.view.render('blog/create_blog')
+    }
   }
 
   public async store(ctx:HttpContextContract) {

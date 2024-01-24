@@ -2,35 +2,21 @@ import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Route from "@ioc:Adonis/Core/Route";
 import Blog from "App/Models/Blog";
 
-const getBlogs = async () => {
+async function getBlogs () {
   const res = await Blog.all()
-  return JSON.stringify(res);
+  return res
 }
 
-// let state = {
-//   data: [
-//     { title: 'something' },
-//     { title: 'something 1' },
-//     { title: 'something 2' },
-//     { title: 'something 3' },
-//     { title: 'something 4' },
-//     { title: 'something 5' },
-//     { title: 'something 6' }
-//   ]
-// }
-
-
-const state = {data: getBlogs()}
-console.log(state);
-
-Route.get("/", (ctx: HttpContextContract) => {
-  return ctx.view.render("welcome", state);
-});
-
+Route.get("/", async (ctx: HttpContextContract) => {
+  return ctx.view.render("welcome", { data: await getBlogs() });
+})
 
 Route.resource("/user", "UsersController");
 
-Route.get("/auth/login", "AuthController.loginForm");
-Route.post("/auth/login", "AuthController.login");
+Route.group(() => {
+  Route.get("/login", "AuthController.loginForm");
+  Route.post("/login", "AuthController.login");
+  Route.post("/logout", "AuthController.logout");
+}).prefix('/auth');
 
-Route.resource("/blog", "BlogsController");
+Route.resource("/blog", "BlogsController").middleware({'*':['auth:web']})
