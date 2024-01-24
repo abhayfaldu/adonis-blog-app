@@ -1,32 +1,27 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Sign in</title>
-  </head>
-  <body>
-    <section>
-      <form action="/auth/login" method="post">
-        <div>
-          <label for="email"></label>
-          <input type="email" name="email" id="email" placeholder="email" />
-          @if(flashMessages.has('errors.email'))
+@layout('layouts/main')
+
+@section('body')
+  <section class="container-sm w-25 border border-sm border-secondory rounded p-4">
+    <form action="/auth/login" method="post">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input type="email" class="d-block w-100 p-2 rounded border border-sm border-secondory-subtle" name="email" id="email" placeholder="email" />
+        @if(flashMessages.has('errors.email'))
+          <div>
             <small>{{ flashMessages.get('errors.email') }}</small>
-          @endif
-        </div>
-        <div>
-          <label for="password"></label>
-          <input type="password" name="password" id="password" placeholder="password" />
-          @if(flashMessages.has('errors.password'))
+          </div>
+        @endif
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="d-block w-100 p-2 rounded border border-sm border-secondory-subtle" name="password" id="password" placeholder="password" />
+        @if(flashMessages.has('errors.password'))
+          <div>
             <small>{{ flashMessages.get('errors.password') }}</small>
-          @endif
-        </div>
-        <div>
-          <input type="submit" value="Sign In" />
-        </div>
-      </form>
-    </section>
-  </body>
-</html>
+          </div>
+        @endif
+      </div>
+      <button type="submit" class="btn btn-primary d-block m-auto">Submit</button>
+    </form>
+  </section>
+@end

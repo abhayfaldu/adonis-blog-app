@@ -41,14 +41,27 @@ export default class BlogsController {
       messages,
     });
 
-    const blog = await Blog.create(body);
+    const bodyWithAuthor = { ...body, author: ctx.auth?.user?.name}
+    const blog = await Blog.create(bodyWithAuthor);
+
     return blog;
   }
 
   public async show(ctx:HttpContextContract) {
     const id = ctx.params.id
     const blog = await Blog.findByOrFail('id', id)
-    return blog;
+
+    const year = blog.createdAt.year
+    const month = blog.createdAt.month
+    const day = blog.createdAt.day
+    
+    const createdAt = `${day}-${month}-${year}`;
+    console.log(createdAt);
+    blog.d_date=createdAt
+
+    // const state = { data: {...blog, createdAt: createdAt} }
+    const state = { data: blog}
+    return ctx.view.render('blog/single_blog', state)
   }
 
   public async edit(ctx: HttpContextContract) {

@@ -1,0 +1,25 @@
+@layout('layouts/main')
+
+@section('body')
+  <!-- main section -->
+  <div class="container-md w-50 d-flex flex-wrap py-3 gap-4">
+    <div class="w-100">
+      <img src={{state.data.image}} class="card-img-top" alt={{`state.data.title ${image}`}}>
+      <div class="py-4">
+        <ul class="tags d-flex list-unstyled text-muted">
+          @each(tag in state.data.tags)
+            <li class="text-decoration-none">#{{ tag }} &nbsp;</li>
+          @end
+        </ul>
+        <h5 class="fs-1 fw-bolder tracking-wide">
+          {{ state.data.title }}
+        </h5>
+        <p class="fs-4">{{ state.data.description }}</p>
+        <div class="d-flex justify-content-between">
+          <p class="fs-6 text-muted">Author: {{ state.data.author }}</p>
+          <p class="fs-6 text-muted">Posted at: {{ state.data.d_date }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+@end

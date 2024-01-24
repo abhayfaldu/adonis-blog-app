@@ -1,63 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog | Home</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-</head>
-<body>
-  <div class="container-xxl mb-4 d-flex juxtify-content-end">
-    <form action="/auth/logout" method="POST">
-      <button type="submit">Logout</button>
-    </form>
-  </div>
-  <div class="container-xxl d-flex flex-wrap p-4 gap-4">
+@layout('layouts/main')
+
+@section('body')
+  <!-- main section -->
+  <div class="container-xxl d-flex flex-wrap gap-4">
     @each(blog in state.data)
-      <div class="card" style="width: 18rem;">
-        <img src={{blog.image}} class="card-img-top" alt={{`blog.title ${image}`}}>
-        <div class="card-body">
-          <ul class="tags d-flex list-unstyled">
-            @each(tag in blog.tags)
-              <li class="text-decoration-none">#{{ tag }} &nbsp;</li>
-            @end
-          </ul>
-          <h5 class="card-title">
-            {{ blog.title }}
-          </h5>
-          <p class="card-text">{{ blog.description }}</p>
-          <a href="/blog/{{blog.id}}" class="btn btn-primary">Read More</a>
+    <div class="card" style="width: 26rem;">
+      <img src={{blog.image}} class="card-img-top" alt={{`blog.title ${image}`}}>
+      <div class="card-body">
+        <ul class="tags d-flex list-unstyled text-muted">
+          @each(tag in blog.tags)
+            <li class="text-decoration-none">#{{ tag }} &nbsp;</li>
+          @end
+        </ul>
+        <h5 class="card-title">
+          {{ blog.title }}
+        </h5>
+        <p class="card-text text-truncate">{{ blog.description }}</p>
+        <a href="/blog/{{blog.id}}" class="btn btn-primary">Read More</a>
         </div>
       </div>
     @end
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-</body>
-</html>
-{{--  
-
-title: 
-
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam, quos!
-
-description:         
-
-Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias omnis illum ab! Ipsa a, eligendi, odit esse ab maxime, deserunt quibusdam corporis soluta cupiditate saepe quam? Molestiae, doloribus eligendi exercitationem, laborum alias deserunt dolorem possimus similique aut harum deleniti a eos odio vitae maxime esse modi nulla obcaecati excepturi sequi, ad ex.
-
-Nostrum nihil vel recusandae repudiandae adipisci aspernatur corrupti ipsam? Necessitatibus exercitationem sit placeat, laudantium.
-
-laborum quasi voluptatibus dolorem laboriosam autem eius ex quibusdam nesciunt eligendi natus aspernatur dignissimos aut aperiam amet nulla omnis magnam delectus est tenetur quos?
-
-Suscipit tempore facilis rem, eos voluptate voluptatem fugit delectus? Ad! Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum, neque impedit veniam explicabo eveniet voluptatum aliquam voluptas dolore odio odit quibusdam dolorem repudiandae minus, repellendus, praesentium numquam at excepturi optio exercitationem sunt autem? Voluptatem id quis cupiditate dolor, natus velit voluptate! Dolore sequi, maxime provident voluptates nisi velit quidem a explicabo voluptatibus non et vel deserunt vero sunt impedit quas pariatur temporibus deleniti, adipisci, eum quasi?i
-
-Cumque dolorum enim sequi maiores earum eius eum consectetur inventore deserunt eaque tempore dolorem placeat corporis labore at magnam debitis suscipit ex quae aspernatur sit veniam, nisi facere! Nam quas accusamus non. Corrupti temporibus quam delectus soluta cum aspernatur autem laborum totam architecto rem reprehenderit blanditiis debitis illo perspiciatis incidunt ducimus, ipsum, alias corporis voluptate.
-
-Dolor, at neque incidunt nihil animi fugit veniam? Accusantium fugit perferendis ipsa, similique magni non ipsum est architecto fuga quidem hic inventore eos asperiores.
-
-quibusdam molestias, recusandae repellat modi vitae magnam sequi vero corporis doloremque quas a? Obcaecati, illum. Ducimus eius aliquid, iusto impedit qui quibusdam? Tempore totam quod magnam impedit at, repellat repellendus quos illum exercitationem distinctio. Provident quo officia animi.
-
-Cumque natus excepturi dolore vero ut cupiditate magni, et a quidem? Consectetur suscipit laudantium aliquid veniam quidem! Quod, odio expedita officia voluptates ipsum possimus distinctio fugit. Sapiente architecto tempore labore facilis libero nesciunt blanditiis perspiciatis modi soluta ullam nam nostrum voluptatibus perferendis officia deserunt quia harum illo ex suscipit nobis obcaecati quam.
-
-reiciendis eius. Quos quasi alias, vel temporibus sed cumque eius delectus dignissimos, iure aliquam similique provident illum corporis! Sint ad repellendus eius, labore iure corrupti aspernatur? Quis qui facilis iusto obcaecati labore earum sunt, quidem voluptate at. Nam, maiores? Autem a quos repudiandae eos modi aspernatur similique ab blanditiis animi cumque, deleniti non provident magni magnam rem fugit dicta sint iure quasi rerum. Porro, voluptates.
-
---}}
+@end
