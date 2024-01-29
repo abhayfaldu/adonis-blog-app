@@ -1,23 +1,45 @@
 @layout('layouts/main')
 
-@section('body')
-  <!-- main section -->
+@section('main-section')
   <div class="container-md w-50 d-flex flex-wrap py-3 gap-4">
     <div class="w-100">
-      <img src={{state.data.image}} class="card-img-top" alt={{`state.data.title ${image}`}}>
+      <h5 class="fs-1 fw-bolder tracking-wide my-4">
+        {{ data.title }}
+      </h5>
+      <div class="w-100"></div>
+      <img src={{data.image}} class="card-img-top" alt='blog image'>
       <div class="py-4">
         <ul class="tags d-flex list-unstyled text-muted">
-          @each(tag in state.data.tags)
+          @each(tag in data.tags)
             <li class="text-decoration-none">#{{ tag }} &nbsp;</li>
           @end
         </ul>
-        <h5 class="fs-1 fw-bolder tracking-wide">
-          {{ state.data.title }}
-        </h5>
-        <p class="fs-4">{{ state.data.description }}</p>
-        <div class="d-flex justify-content-between">
-          <p class="fs-6 text-muted">Author: {{ state.data.author }}</p>
-          <p class="fs-6 text-muted">Posted at: {{ state.data.d_date }}</p>
+        <div class="fs-4 mt-4">
+          {{{ data.description }}}
+        </div>
+        <div class="row justify-content-end">
+          <div class="d-flex flex-column align-items-start">
+            <small class="fs-6 mb-0">
+              <strong>Author:</strong>
+              <span class="text-muted"> {{ data.user.name }}</span>
+            </small>
+            <small class="fs-6 mb-0">
+              <strong>Updated on:</strong>
+              <span class="text-muted"> {{ data.date }}</span>
+            </small>
+          </div>
+          <div class="d-flex">
+            @if (auth?.user?.id === data.userId)
+              <div class="d-flex justify-content-start mt-3 gap-2 w-100">
+                <a href="/blog/{{data.id}}/edit" class="btn btn-primary d-flex align-items-center justify-content-center">
+                  Edit
+                </a>
+                <form action="/blog/{{data.id}}?_method=DELETE" method="POST">
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+              </div>
+            @endif
+          </div>
         </div>
       </div>
     </div>

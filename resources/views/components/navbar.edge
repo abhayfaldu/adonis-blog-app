@@ -1,0 +1,43 @@
+<style>
+  .fs-18px {
+    font-size: 18px;
+  }
+  .bg-custom {
+    background-color: #232E52;
+  }
+</style>
+<nav class="navbar navbar-expand-lg mb-4">
+  <div class="container-xxl">
+    <div>
+      <img src="svg/blue-logo.svg" alt="svg" class="" style="width: 130px">
+    </div>
+    <button
+      class="navbar-toggler" 
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+      @if ( auth?.user )
+      <div class="d-flex gap-4 flex-column flex-lg-row">
+        <a href="/blog/create" class="text-decoration-none text-body my-auto fs-18px">Write</a>
+        <a href="/blog/user/{{auth?.user.id}}" class="text-decoration-none text-body my-auto fs-18px">My blogs</a>
+        <p class="my-auto fs-18px">Hi, {{auth?.user?.name}}</p>
+        <form action="/auth/logout" method="POST">
+          <button type="submit" class="btn text-white px-4 bg-custom fs-6 rounded-pill">Logout</button>
+        </form>
+      </div>
+      @else
+      <form action="/auth/sign-in" method="GET">
+        <button type="submit" class="btn bg-custom fs-6 text-white">Sign In</button>
+      </form>
+      @endif
+    </div>
+  </div>
+</nav>

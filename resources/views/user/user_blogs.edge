@@ -1,8 +1,7 @@
 @layout('layouts/main')
 
-@section('body')
-  <!-- main section -->
-  <div class="container-xxl d-flex flex-wrap gap-4">
+@section('main-section')
+  <div class="container-xxl d-flex flex-wrap gap-4 pb-4">
     @each(blog in state.data)
     <div class="card" style="width: 26rem;">
       <img src={{blog.image}} class="card-img-top" alt={{`blog.title ${image}`}}>

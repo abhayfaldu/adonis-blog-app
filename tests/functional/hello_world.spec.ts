@@ -1,6 +1,6 @@
 import { test } from '@japa/runner'
 
-test('display welcome page', async ({ client }) => {
+test('display blog/blog-list page', async ({ client }) => {
   const response = await client.get('/')
 
   response.assertStatus(200)

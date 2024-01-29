@@ -1,7 +1,8 @@
 @layout('layouts/main')
 
-@section('body')
-  <section class="container-sm w-25 border border-sm border-secondory rounded p-4">
+@section('main-section')
+  <section class="container-sm w-25 bg-white border border-sm border-secondory rounded p-4">
+    <h3 class="text-center mb-3">Sign up</h3>
     <form action="/user" method="post">
       <div class="mb-3">
         <label for="name" class="form-label">Name</label>
@@ -32,7 +33,7 @@
         @endif
       </div>
       <div class="mb-3">
-        <button type="submit" class="btn btn-primary d-block m-auto">Submit</button>
+        <button type="submit" class="btn btn-primary d-block m-auto">Sign up</button>
       </div>
     </form>
   </section>

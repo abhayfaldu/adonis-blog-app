@@ -1,0 +1,16 @@
+@layout('layouts/main')
+
+@section('main-section')
+  <div class="container-xxl p-0 row mx-auto">
+    <div class="col-3">
+      @if (user?.avatar)
+        <img src={{user.avatar}} class="card-img-top" alt="user sjd image">
+      @else
+        <img src="/images/default.jpg" class="card-img-top" alt="user default image">
+      @endif
+    </div>
+    <div class="col-6">
+      <h1>{{user.name}}</h1>
+    </div>
+  </div>
+@end

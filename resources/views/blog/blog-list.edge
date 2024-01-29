@@ -1,0 +1,36 @@
+@layout('layouts/main')
+
+@section('main-section')
+  <div class="container-xxl">
+    @if(!isDelete)
+      @!component('components/header')
+    @endif
+    <h3 class="heading mb-3 fw-bold fs-1">Your Feed</h3>
+    <div class="mb-4" style="border-top: 1px solid #EBF2FE;"></div>
+
+    @each(blog in data)
+      <div class="">
+        <div class="">
+          <ul class="">
+            @each(tag in blog.tags)
+              <li class="">#{{ tag }} &nbsp;</li>
+            @end
+          </ul>
+          <h5 class="">
+            {{ blog.title }}
+          </h5>
+          <div class=""><small>Last updated at {{ blog.date }} by <strong>{{ blog.$extras.user_name }}</strong></small></div>
+          <a href="/blog/{{blog.id}}" class="">Read More</a>
+          @if(isDelete)
+            <a href="/blog/{{blog.id}}/edit" class="">Edit</a>
+            {{--  <a href="/blog/{{blog.id}}?_method=DELETE" class="btn btn-danger">Delete</a>  --}}
+            <form action="/blog/{{blog.id}}?_method=DELETE" method="POST">
+              <button type="submit" class="">Delete</button>
+            </form>
+          @endif
+        </div>
+        <img src={{blog.image}} class="" alt={{`blog.title ${image}`}}>
+      </div>
+    @end
+  </div>
+@end
