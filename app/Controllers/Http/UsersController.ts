@@ -13,13 +13,13 @@ export default class UsersController {
   }
 
   public async store(ctx: HttpContextContract) {
-    const rulesForAllFields = [rules.required(), rules.trim()];
+    const commonRules = [rules.required(), rules.trim()];
 
     const bodySchema = schema.create({
-      name: schema.string([...rulesForAllFields, rules.maxLength(20)]),
-      username: schema.string([...rulesForAllFields, rules.maxLength(20)]),
-      email: schema.string([...rulesForAllFields, rules.email()]),
-      password: schema.string([...rulesForAllFields, rules.minLength(8)]),
+      name: schema.string([...commonRules, rules.maxLength(20)]),
+      username: schema.string([...commonRules, rules.maxLength(20)]),
+      email: schema.string([...commonRules, rules.email()]),
+      password: schema.string([...commonRules, rules.minLength(8)]),
     });
 
     const messages = {
@@ -41,7 +41,7 @@ export default class UsersController {
     }
 
     const user = await User.create(body);
-    return user;
+    return ctx.view.render('auth/signIn');
   }
   
   public async show(ctx:HttpContextContract) {

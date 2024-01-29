@@ -2,16 +2,14 @@ import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { rules, schema } from "@ioc:Adonis/Core/Validator";
 
 export default class AuthController {
-  public async loginForm(ctx: HttpContextContract) {
-    return ctx.view.render("auth/login");
+  public async signInForm(ctx: HttpContextContract) {
+    return ctx.view.render("auth/signIn");
   }
 
-  public async login(ctx: HttpContextContract) {
-    const rulesForAllFields = [ rules.required(), rules.trim() ];
-
+  public async signIn(ctx: HttpContextContract) {
     const bodySchema = schema.create({
-      email: schema.string([ ...rulesForAllFields, rules.email() ]),
-      password: schema.string([ ...rulesForAllFields, rules.minLength(8) ]),
+      email: schema.string.optional([rules.trim(), rules.email()]),
+      password: schema.string(),
     });
 
     const messages = {
@@ -25,7 +23,12 @@ export default class AuthController {
       messages,
     });
 
-    await ctx.auth.use("web").attempt(body.email, body.password);
+    try {
+      await ctx.auth.use("web").attempt(body.email, body.password);
+    } catch (error) {
+      const state = { error: { statusCode: 404, message: error} }
+      return ctx.view.render('errors/not-found', state)
+    }
     return ctx.response.redirect('/')
   }
 

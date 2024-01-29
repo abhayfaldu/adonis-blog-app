@@ -60,7 +60,7 @@ declare module '@ioc:Adonis/Addons/Auth' {
     | Web Guard
     |--------------------------------------------------------------------------
     |
-    | The web guard uses sessions for maintaining user login state. It uses
+    | The web guard uses sessions for maintaining user signIn state. It uses
     | the `user` provider for fetching user details.
     |
     */

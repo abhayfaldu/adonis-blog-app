@@ -1,1 +1,7 @@
-<p> It's a 404 </p>
+@if (state.error.statusCode === 404)
+  <p> It's a {{ state.error.statusCode }} </p>
+  <p>Email does not exist please sign up</p>
+  <a href="/user/create">Sign up</a>
+@else
+  <p>It's a 404</p>
+@endif

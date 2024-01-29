@@ -60,7 +60,7 @@ const authConfig: AuthConfig = {
         |--------------------------------------------------------------------------
         |
         | Uids are used to search a user against one of the mentioned columns. During
-        | login, the auth module will search the user mentioned value against one
+        | signIn, the auth module will search the user mentioned value against one
         | of the mentioned columns to find their user record.
         |
         */

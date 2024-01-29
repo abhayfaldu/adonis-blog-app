@@ -1,48 +1,29 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Create Blog</title>
-  </head>
-  <body>
-    <section>
-      <form action="/blog/edit" method="post">
-        <div>
-          <label for="title"></label>
-          <input type="text" name="title" id="title" placeholder="title"/>
-          @if(flashMessages.has('errors.title'))
-            <small>{{ flashMessages.get('errors.title') }}</small>
-          @endif
-        </div>
-        <div>
-          <label for="description"></label>
-          <textarea id="description"" name="description" rows="5" cols="33" placeholder="Enter your description here..."></textarea>
-          @if(flashMessages.has('errors.description'))
-            <small>{{ flashMessages.get('errors.description') }}</small>
-          @endif
-        </div>
-        <div>
-          <label for="image"></label>
-          <input type="text" name="image" id="image" placeholder="image" />
-          @if(flashMessages.has('errors.image'))
-            <small>{{ flashMessages.get('errors.image') }}</small>
-          @endif
-        </div>
+@layout('layouts/main')
 
-        {{-- imporve tags input method --}}
-        <div>
-          <label for="tags"></label>
-          <input type="text" name="tags" id="tags" placeholder="Enter tags saprated by commas" />
-          @if(flashMessages.has('errors.tags'))
-            <small>{{ flashMessages.get('errors.tags') }}</small>
-          @endif
-        </div>
-        <div>
-          <input type="submit" value="Create Blog" />
-        </div>
-      </form>
-    </section>
-  </body>
-</html>
+@section('body')
+  <section class="container-sm bg-white w-50 border border-sm border-secondory rounded p-4">
+    <h3 class="text-center mb-4">Edit blog</h3>
+    <form action="/blog/{{ data.id }}?_method=PUT" method="POST">
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" value='{{ data.title }}' class="d-block w-100 p-2 rounded border border-sm border-secondory-subtle" name="title" id="title"/>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea id="description" class="d-block w-100 p-2 rounded border border-sm border-secondory-subtle" name="description" rows="5" cols="33">{{ data.description }}</textarea>
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">Image URL</label>
+        <input type="text" value='{{ data.image }}' name="image" class="d-block w-100 p-2 rounded border border-sm border-secondory-subtle" id="image" />
+      </div>
+      {{-- imporve tags input method --}}
+      <div class="mb-3">
+        <label for="tags" class="form-label">Tags</label>
+        <input type="text" value='{{ data.tags }}' name="tags" id="tags" class="d-block w-100 p-2 rounded border border-sm border-secondory-subtle"/>
+      </div>
+      <div class="mb-3">
+        <button type="submit" class="btn btn-primary d-block m-auto">Update blog</button>
+      </div>
+    </form>
+  </section>
+@end

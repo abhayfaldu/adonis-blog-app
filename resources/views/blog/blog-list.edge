@@ -1,0 +1,28 @@
+@layout('layouts/main')
+
+@section('body')
+  <div class="container-xxl d-flex flex-wrap gap-4 pb-4">
+    @each(blog in data)
+      <div class="card" style="width: 26rem;">
+      <img src={{blog.image}} class="card-img-top" alt={{`blog.title ${image}`}}>
+        <div class="card-body">
+          <ul class="tags d-flex list-unstyled text-muted">
+            @each(tag in blog.tags)
+              <li class="text-decoration-none">#{{ tag }} &nbsp;</li>
+            @end
+          </ul>
+          <h5 class="card-title">
+            {{ blog.title }}
+          </h5>
+          <div class="mb-2"><small>Last updated at {{ blog.date }} by <strong>{{ blog.$extras.user_name }}</strong></small></div>
+          <p class="card-text text-truncate">{{ blog.description }}</p>
+          <a href="/blog/{{blog.id}}" class="btn btn-primary">Read More</a>
+          @if(isDelete)
+            <a href="/blog/{{blog.id}}/edit" class="btn btn-primary">Edit</a>
+            <a href="/blog/{{blog.id}}?_method=DELETE" class="btn btn-danger">Delete</a>
+          @endif
+        </div>
+      </div>
+    @end
+  </div>
+@end
