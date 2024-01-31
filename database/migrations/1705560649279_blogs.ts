@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.string('title')
       table.text('description')
       table.json('tags')
-      table.string('image')
+      table.json('image')
       table.string('author')
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })

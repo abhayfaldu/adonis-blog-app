@@ -7,14 +7,16 @@
         {{ data.title }}
       </h5>
       <div class="w-100"></div>
-      <img src={{data.image}} class="card-img-top" alt={{`data.title ${image}`}}>
+      <img src={{data.image}} class="card-img-top" alt='blog image'>
       <div class="py-4">
         <ul class="tags d-flex list-unstyled text-muted">
           @each(tag in data.tags)
             <li class="text-decoration-none">#{{ tag }} &nbsp;</li>
           @end
         </ul>
-        <p class="fs-4">{{ data.description }}</p>
+        <div class="fs-4 mt-4">
+          {{{ data.description }}}
+        </div>
         <div class="row justify-content-end">
           <div class="d-flex flex-column align-items-start">
             <small class="fs-6 mb-0">
@@ -32,7 +34,9 @@
                 <a href="/blog/{{data.id}}/edit" class="btn btn-primary d-flex align-items-center justify-content-center">
                   Edit
                 </a>
-                <a href="/blog/{{data.id}}?_method=DELETE" class="btn btn-danger">Delete</a>
+                <form action="/blog/{{data.id}}?_method=DELETE" method="POST">
+                  <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
               </div>
             @endif
           </div>

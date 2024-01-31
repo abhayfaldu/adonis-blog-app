@@ -28,6 +28,7 @@
     "youch-terminal": "^2.2.3"
   },
   "dependencies": {
+    "@adonisjs/attachment-lite": "^1.0.8",
     "@adonisjs/auth": "^8.2.3",
     "@adonisjs/core": "^5.9.0",
     "@adonisjs/lucid": "^18.4.0",
@@ -35,6 +36,7 @@
     "@adonisjs/session": "^6.4.0",
     "@adonisjs/shield": "^7.1.1",
     "@adonisjs/view": "^6.2.0",
+    "cloudinary": "^2.0.0",
     "jsonwebtoken": "^9.0.2",
     "luxon": "^3.4.4",
     "moment": "^2.30.1",
@@ -42,6 +44,7 @@
     "phc-argon2": "^1.1.4",
     "proxy-addr": "^2.0.7",
     "reflect-metadata": "^0.2.1",
-    "source-map-support": "^0.5.21"
+    "source-map-support": "^0.5.21",
+    "uuid": "^9.0.1"
   }
 }

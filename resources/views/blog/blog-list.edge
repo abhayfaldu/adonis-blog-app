@@ -19,7 +19,10 @@
           <a href="/blog/{{blog.id}}" class="btn btn-primary">Read More</a>
           @if(isDelete)
             <a href="/blog/{{blog.id}}/edit" class="btn btn-primary">Edit</a>
-            <a href="/blog/{{blog.id}}?_method=DELETE" class="btn btn-danger">Delete</a>
+            {{--  <a href="/blog/{{blog.id}}?_method=DELETE" class="btn btn-danger">Delete</a>  --}}
+            <form action="/blog/{{blog.id}}?_method=DELETE" method="POST">
+              <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
           @endif
         </div>
       </div>

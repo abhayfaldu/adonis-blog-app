@@ -1,41 +1,116 @@
-@layout('layouts/main')
+{{--  @set('isDisabled', true)  --}}
 
-@section('body')
-  <section class="container-sm bg-white w-50 border border-sm border-secondory rounded p-4">
-    <h3 class="text-center mb-4">Create Blog</h3>
-    <form action="/blog" method="post">
-      <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input type="text" class="d-block w-100 p-2 rounded border border-sm border-secondory-subtle" name="title" id="title" placeholder="title"/>
-        @if(flashMessages.has('errors.title'))
-          <small>{{ flashMessages.get('errors.title') }}</small>
-        @endif
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Home</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    >
+  </head>
+  <body class="bg-secondary" style="--bs-bg-opacity: .1;">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary mb-4">
+      <div class="container-xxl">
+        <a class="navbar-brand" href="/">Blog App</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+          </ul>
+          @if ( auth?.user )
+            <div class="d-flex gap-4 flex-column flex-lg-row">
+              <a href="/blog/create" class="text-decoration-none text-body my-auto">Write blog</a>
+              <a href="/blog/user/{{auth?.user.id}}" class="text-decoration-none text-body my-auto">My blogs</a>
+              <p class="my-auto">Hi, {{auth?.user?.name}}</p>
+              <form action="/auth/logout" method="POST">
+                <button type="submit" class="btn btn-primary">Logout</button>
+              </form>
+            </div>
+          @else
+            <form action="/auth/sign-in" method="GET">
+              <button type="submit" class="btn btn-primary">Sign In</button>
+            </form>
+          @endif
+        </div>
       </div>
-      <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea id="description" class="d-block w-100 p-2 rounded border border-sm border-secondory-subtle" name="description" rows="5" cols="33" placeholder="Enter your description here..."></textarea>
-        @if(flashMessages.has('errors.description'))
-          <small>{{ flashMessages.get('errors.description') }}</small>
-        @endif
-      </div>
-      <div class="mb-3">
-        <label for="image" class="form-label">Image URL</label>
-        <input type="text" name="image" class="d-block w-100 p-2 rounded border border-sm border-secondory-subtle" id="image" placeholder="image" />
-        @if(flashMessages.has('errors.image'))
-          <small>{{ flashMessages.get('errors.image') }}</small>
-        @endif
-      </div>
-      {{-- imporve tags input method --}}
-      <div class="mb-3">
-        <label for="tags" class="form-label">Tags</label>
-        <input type="text" name="tags" id="tags" class="d-block w-100 p-2 rounded border border-sm border-secondory-subtle" placeholder="Enter tags saprated by commas" />
-        @if(flashMessages.has('errors.tags'))
-          <small>{{ flashMessages.get('errors.tags') }}</small>
-        @endif
-      </div>
-      <div class="mb-3">
-        <button type="submit" class="btn btn-primary d-block m-auto">Create blog</button>
-      </div>
-    </form>
-  </section>
-@end
+    </nav>
+
+    {{--  Create blog form  --}}
+    <section class="container-sm bg-white w-50 border border-sm border-secondory rounded p-4">
+      <h3 class="text-center mb-4">Create Blog</h3>
+      <form action="/blog" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" class="d-block w-100 p-2 rounded border border-sm border-secondory-subtle" name="title" id="title" placeholder="title" value="Blog title"/>
+          @if(flashMessages.has('errors.title'))
+            <small class="text-danger">{{ flashMessages.get('errors.title') }}</small>
+          @endif
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Content</label>
+          <textarea name="description" id="description" cols="30" rows="10" class="visually-hidden"></textarea>
+          <div id="editor"></div>
+          <button type="button" class="btn btn-primary" onclick="saveContent()">Save</button>
+          @if(flashMessages.has('errors.description'))
+            <small class="text-danger">{{ flashMessages.get('errors.description') }}</small>
+          @endif
+        </div>
+        <div class="mb-3">
+          <label for="image" class="form-label">Image URL</label>
+          <input type="file" name="image" id="image" class="d-block w-100 p-2 rounded border border-sm border-secondory-subtle" />
+          @if(flashMessages.has('errors.image'))
+            <small class="text-danger">{{ flashMessages.get('errors.image') }}</small>
+          @endif
+        </div>
+        {{-- imporve tags input method --}}
+        <div class="mb-3">
+          <label for="tags" class="form-label">Tags</label>
+          <input type="text" name="tags" id="tags" class="d-block w-100 p-2 rounded border border-sm border-secondory-subtle" placeholder="Enter tags saprated by commas" value="blog,tag,tags" />
+          @if(flashMessages.has('errors.tags'))
+            <small class="text-danger">{{ flashMessages.get('errors.tags') }}</small>
+          @endif
+        </div>
+        <div class="mb-3">
+          <button
+            type="submit"
+            id="submit"
+            {{--  disabled='{{ isDisabled }}'  --}}
+            class="btn btn-primary d-block m-auto"
+          >
+            Create blog
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script>
+    <script>
+      let editor;
+      ClassicEditor
+        .create(document.querySelector( '#editor' ))
+        .then(newEditor => {
+          editor = newEditor;
+        })
+        .catch(error => {
+          console.error(error)
+        });
+
+      const saveContent = () => {
+        const content = editor?.getData()
+        const descripiton = document.querySelector('#description')
+        description.innerHTML = content
+        console.log(description.innerHTML);
+      }
+    </script>
+  </body>
+</html>

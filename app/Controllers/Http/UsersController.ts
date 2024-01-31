@@ -19,7 +19,7 @@ export default class UsersController {
       name: schema.string([...commonRules, rules.maxLength(20)]),
       username: schema.string([...commonRules, rules.maxLength(20)]),
       email: schema.string([...commonRules, rules.email()]),
-      password: schema.string([...commonRules, rules.minLength(8)]),
+      password: schema.string([...commonRules, rules.minLength(6)]),
     });
 
     const messages = {
@@ -40,24 +40,21 @@ export default class UsersController {
       return ctx.response.status(400).json({ message: "Email already exists" });
     }
 
-    const user = await User.create(body);
+    await User.create(body);
     return ctx.view.render('auth/signIn');
   }
   
   public async show(ctx:HttpContextContract) {
-    const id = ctx.params.id
-    const user = await User.findByOrFail('id', id)
-    return user;
+    const user = await User.findOrFail(ctx.params.id)
+    return ctx.view.render('user/profile', { user })
   }
 
   public async edit(ctx: HttpContextContract) {
-    const id = ctx.params.id
-    return ctx.view.render(`user/${id}/edit`)
+    return ctx.view.render(`user/${ctx.params.id}/edit`)
   }
 
   public async update(ctx: HttpContextContract) {
-    const id = ctx.params.id
-    const user = await User.findByOrFail('id', id)
+    const user = await User.findOrFail(ctx.params.id)
     user.merge(ctx.request.only(
       [ "name", "username", "email", "password" ]
     ));
@@ -65,8 +62,7 @@ export default class UsersController {
   }
 
   public async destroy(ctx: HttpContextContract) {
-    const id = ctx.params.id;
-    const user = await User.findByOrFail("id", id);
+    const user = await User.findOrFail(ctx.params.id);
     await user.delete();
     return user;
   }

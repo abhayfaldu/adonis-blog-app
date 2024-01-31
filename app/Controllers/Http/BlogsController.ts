@@ -1,35 +1,41 @@
+import Application from '@ioc:Adonis/Core/Application';
 import type { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import { rules, schema } from "@ioc:Adonis/Core/Validator";
 import Blog from "App/Models/Blog";
+// import { uploadImage } from 'Config/cloudinary';
+import { v2 as cloudinary } from 'cloudinary';
+import fs from 'fs';
+import multer from 'multer';
+import path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
 export default class BlogsController {
   public async index(ctx: HttpContextContract) {
-    const data = await Blog.query().leftJoin('users', 'users.id', '=', 'blogs.user_id').select('blogs.*', 'users.name as user_name');
+    const data = await Blog.query()
+      .leftJoin('users', 'users.id', '=', 'blogs.user_id')
+      .select('blogs.*', 'users.name as user_name');
     return ctx.view.render("blog/blog-list", { data });
   }
 
   public async create(ctx: HttpContextContract) {
-    return ctx.view.render("blog/create_blog");
+    const user = ctx.auth?.user;
+    return ctx.view.render("blog/create_blog", { user });
   }
 
   public async store(ctx: HttpContextContract) {
-    const commonRules = [rules.required(), rules.trim()];
 
+    // validation
     const bodySchema = schema.create({
       title: schema.string([
-        ...commonRules,
+        rules.trim(),
         rules.maxLength(100),
-        rules.minLength(1),
       ]),
-      description: schema.string([...commonRules, rules.minLength(1)]),
-      image: schema.string([...commonRules]),
-      tags: schema.string([...commonRules]),
+      description: schema.string.optional([rules.trim()]),
+      tags: schema.string([rules.trim()]),
     });
 
     const messages = {
       required: "the {{ field }} is required.",
-      minLength:
-        "{{ field }} must be al least {{ options.minLength }} characters.",
       maxLength:
         "{{ field }} must be not be more then {{ options.maxLength }} characters.",
     };
@@ -38,6 +44,7 @@ export default class BlogsController {
       schema: bodySchema,
       messages,
     });
+
     const bodyWithAuthor = { ...body, user_id: ctx.auth?.user?.id };
     const blog = await Blog.create(bodyWithAuthor);
 
