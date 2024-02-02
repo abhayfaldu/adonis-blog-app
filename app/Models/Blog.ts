@@ -1,12 +1,7 @@
-import {
-  AttachmentContract,
-  attachment
-} from '@ioc:Adonis/Addons/AttachmentLite';
 import { BaseModel, BelongsTo, beforeSave, belongsTo, column } from '@ioc:Adonis/Lucid/Orm';
 import { DateTime } from 'luxon';
 import moment from "moment";
 import User from './User';
-
 
 export default class Blog extends BaseModel {
   @column({ isPrimary: true })
