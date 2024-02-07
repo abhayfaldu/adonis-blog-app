@@ -1,36 +1,106 @@
 @layout('layouts/main')
 
 @section('main-section')
+  <style>
+    .list-main {
+      width: 85%;
+    }
+    .author {
+      background-color: #ebf2fe;
+      font-size: 13px;
+    }
+    .border-light-blue {
+      border-color: #ebf2fe;
+    }
+    .blog-title {
+      box-sizing: 28px;
+      line-height: 130%;
+      letter-spacing: 0%;
+    }
+    .object-fit-contain {
+      object-fit: contain;
+      width: 100%;
+    }
+    .blog-description {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      -webkit-line-clamp: 3;
+    }
+    .blog-description > * {
+      font-size: 18px;
+      font-weight: normal;
+    }
+    .text-section {
+      width: 66%;
+    }
+    .image-section {
+      width: 33%;
+    }
+    .btn-width {
+      width: 40px;
+    }
+    .btn {
+      background-color: #fff;
+      border: 1px solid #232e52;
+      color: #232E52;
+    }
+    .btn:hover {
+      background-color: #ebf2fe;
+      color: #232E52;
+      border: 1px solid #ebf2fe;
+      transition: 200ms ease;
+    }
+  </style>
   <div class="container-xxl">
     @if(!isDelete)
       @!component('components/header')
     @endif
-    <h3 class="heading mb-3 fw-bold fs-1">Your Feed</h3>
-    <div class="mb-4" style="border-top: 1px solid #EBF2FE;"></div>
 
-    @each(blog in data)
-      <div class="">
-        <div class="">
-          <ul class="">
-            @each(tag in blog.tags)
-              <li class="">#{{ tag }} &nbsp;</li>
-            @end
-          </ul>
-          <h5 class="">
-            {{ blog.title }}
-          </h5>
-          <div class=""><small>Last updated at {{ blog.date }} by <strong>{{ blog.$extras.user_name }}</strong></small></div>
-          <a href="/blog/{{blog.id}}" class="">Read More</a>
-          @if(isDelete)
-            <a href="/blog/{{blog.id}}/edit" class="">Edit</a>
-            {{--  <a href="/blog/{{blog.id}}?_method=DELETE" class="btn btn-danger">Delete</a>  --}}
-            <form action="/blog/{{blog.id}}?_method=DELETE" method="POST">
-              <button type="submit" class="">Delete</button>
-            </form>
-          @endif
+    <div class="list-main m-auto">
+      @if(isDelete)
+        <h3 class="heading mb-4 mt-5 pb-4 fw-bold fs-1 border-bottom border-light-blue">Your blogs</h3>
+      @else
+        <h3 class="heading mb-4 mt-5 pb-4 fw-bold fs-1 border-bottom border-light-blue">Feed</h3>
+      @end
+      @each(blog in data)
+        <div class="d-flex gap-4 w-100 mb-4 pb-4 border-bottom border-light-blue">
+          <div class="text-section d-flex flex-column w-75">
+            <div class="d-flex align-items-center">
+              <p class="author fw-semibold py-2 px-3 rounded-2 text-uppercase">{{ blog.$extras.user_name }}</p>
+              <p class="py-2 px-3 text-uppercase">{{ blog.date }}</p>
+            </div>
+            <div class="d-flex flex-column gap-2">
+              <h3 class="blog-title fw-bold">{{ blog.title }}</h3>
+              <div class="blog-description">{{{ blog.description }}}</div>
+              <ul class="d-flex list-unstyled mt-2 fw-bold gap-2">
+                @each(tag in blog.tags)
+                  <li class="bg-secondary rounded-pill p-1 ps-2 py-auto" style="--bs-bg-opacity: .1;">{{ tag }} &nbsp;</li>
+                @end
+              </ul>
+              <div class="d-flex gap-2">
+                <a href="/blog/{{blog.id}}" class="btn btn-primary align-self-start">Read More</a>
+                @if(isDelete)
+                  <a href="/blog/{{blog.id}}/edit" class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
+                    <img src="/svg/edit.svg" alt="edit-svg">
+                    <p class="m-0">Edit</p> 
+                  </a>
+                  {{--  <a href="/blog/{{blog.id}}?_method=DELETE" class="btn btn-danger">Delete</a>  --}}
+                  <form action="/blog/{{blog.id}}?_method=DELETE" method="POST">
+                    <button type="submit" class="btn btn-danger d-flex align-items-center justify-content-center gap-2">
+                      <img src="/svg/trash.svg" alt="delete-svg">
+                      <p class="m-0">Delete</p> 
+                    </button>
+                  </form>
+                @endif
+              </div>
+            </div>
+          </div>
+          <div class="image-section rounded-3 d-flex align-items-start">
+            <img src={{blog.image}} class="object-fit-contain rounded-4" alt={{`blog.title ${image}`}}>
+          </div>
         </div>
-        <img src={{blog.image}} class="" alt={{`blog.title ${image}`}}>
-      </div>
-    @end
+      @end
+    </div>
   </div>
 @end

@@ -1,12 +1,76 @@
 @layout('layouts/main')
 
 @section('main-section')
-  <div class="container-md w-50 d-flex flex-wrap py-3 gap-4">
+<style>
+  .single-blog__title {
+    font-size: 42px;
+    margin-bottom: 2rem;
+  }
+  .single-blog__author-image-wrapper {
+    height: 45px;
+  }
+  .single-blog__info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+  .single-blog__author-image {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+  .single-blog__user-name + span > span {
+    margin-top: -10px;
+    border: 1px solid red;
+  }
+  .single-blog__update-date {
+    font-size: 14px;
+  }
+  .fs-13 {
+    font-size: 13px;
+  }
+</style>
+  <div class="container-sm w-50 d-flex flex-wrap py-3 gap-4">
     <div class="w-100">
-      <h5 class="fs-1 fw-bolder tracking-wide my-4">
+      <h5 class="single-blog__title fw-bolder tracking-wide mt-3">
         {{ data.title }}
       </h5>
-      <div class="w-100"></div>
+      <div class="single-blog__info">
+        <div class="single-blog__author-image-wrapper">
+          @if (data.user.avatar)
+          <img src={{data.user.avatar}} alt="user-image" class="single-blog__author-image">
+          @else
+          <img src="/images/default-user.jpg" alt="user-image" class="single-blog__author-image">
+          @endif
+        </div>
+        <div>
+          <div class="d-flex gap-1 align-items-center">
+            <span class="single-blog__author-name m-0">{{data.user.name}}</span>
+            <span class="m-0 d-flex align-items-center text-secondary"><span class="mb-2">.</span></span>
+            <span href="#" class="single-blog__follow-btn m-0 text-success">Follow</span>
+          </div>
+          <p class="single-blog__update-date m-0 text-secondary">{{data.date}}</p>
+        </div>
+      </div>
+
+      {{--  clap, coments number section  --}}
+      <div class="d-flex">
+        <div class="d-flex gap-2">
+          <div class="d-flex align-items-center gap-1">
+            <img src="/svg/heart.svg" alt="clap-svg">            
+            <p class="fs-13 m-0">1.3K</p>
+          </div>
+          <div class="d-flex align-items-center gap-1">
+            <img src="/svg/comment.svg" alt="" class="">
+            <p class="fs-13 m-0">23</p>
+          </div>
+        </div>
+        <div class="d-flex gap-2">
+          <img src="" alt="" class="">
+          <img src="" alt="" class="">
+        </div>
+      </div>
       <img src={{data.image}} class="card-img-top" alt='blog image'>
       <div class="py-4">
         <ul class="tags d-flex list-unstyled text-muted">

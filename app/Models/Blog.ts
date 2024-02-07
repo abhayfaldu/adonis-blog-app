@@ -36,7 +36,7 @@ export default class Blog extends BaseModel {
   }
 
   public get date() {
-    return moment(this.updatedAt.toISODate()).format("MMM DD, yyyy");
+    return moment(this.updatedAt.toISODate()).format("MMM DD, YYYY");
   }
 
   @beforeSave()

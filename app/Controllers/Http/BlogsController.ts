@@ -69,7 +69,7 @@ export default class BlogsController {
     const updatedBody = {
       ...body,
       user_id: ctx.auth?.user?.id,
-      image: image_url
+      image: image_url,
     };
     
     const blog = await Blog.create(updatedBody);
@@ -122,5 +122,27 @@ export default class BlogsController {
       .where('user_id', ctx.auth!.user!.id)
       .select("blogs.*", "users.name as user_name");
     return ctx.view.render("blog/blog-list", { data, isDelete: true });
+  }
+  
+  public async extractFirstPTagContent(htmlString) {
+    // Use a regular expression to match the content of the first <p> tag
+    if (!htmlString) {
+      const match = /<p>(.*?)<\/p>/i.exec(htmlString);
+
+      // If a match is found, extract the content
+      if (match && match[1]) {
+        const textContent = match[1];
+
+        // Return the entire content if it's less than 100 characters
+        if (textContent.length <= 100) {
+          return textContent;
+        }
+
+        // Extract the first 100 characters and add three dots
+        const truncatedContent = textContent.substring(0, 100) + '...';
+        return truncatedContent;
+      }
+    }
+    return null; // Return null if no <p> tags are found
   }
 }
